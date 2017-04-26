@@ -31,7 +31,6 @@ public class ServerThread implements Runnable {
         
         // lexicon
         hangmanWords = new HangmanLexicon("words.txt");
-        String word = hangmanWords.pickWord();
         
         server = new Server(WRITE_BUFFER, READ_BUFFER);
         
@@ -65,9 +64,12 @@ public class ServerThread implements Runnable {
                         if(pgs.start){
                             PacketSetupGame pir = new PacketSetupGame();
                             
+                            // game word
+                            String word = hangmanWords.pickWord();
                             System.out.println("Establecer palabra. " + word);
                             pir.gameWord = word;
                             
+                            // create ip table
                             for (int i = 0; i < players.size(); i++) {
                                 if(i == players.size()-1){
                                     pir.table.put(players.get(i).getNickname(), players.get(0).getConn().getRemoteAddressTCP().getHostString());

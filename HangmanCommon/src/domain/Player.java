@@ -42,6 +42,18 @@ public class Player {
     public void setConn(Connection conn) {
         this.conn = conn;
     }
+
+    @Override
+    public boolean equals(Object object) {
+        boolean sameSame = false;
+
+        if (object != null && object instanceof Player){
+            sameSame = this.nickname == ((Player) object).nickname;
+        }
+
+        return sameSame;
+    }
+    
     
     
 }

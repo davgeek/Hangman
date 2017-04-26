@@ -97,9 +97,9 @@ public class ClientThread implements Runnable {
                             System.out.println("Cliente ya conectado, reenviar paquete a su nextIp");
                             final Set<Entry<String, String>> mapValues = pir.table.entrySet();
                             final int maplength = mapValues.size();
-                            final Entry<String, String>[] test = new Entry[maplength];
-                            mapValues.toArray(test);
-                            if (test[maplength - 1].getKey().equals(nickname)) {
+                            final Entry<String, String>[] auxTable = new Entry[maplength];
+                            mapValues.toArray(auxTable);
+                            if (auxTable[maplength - 1].getKey().equals(nickname)) {
                                 System.out.println("Soy el ultimo");
                             } else {
                                 filterOutput.sendTCP(pir);
