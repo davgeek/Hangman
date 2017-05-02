@@ -17,7 +17,9 @@ public class HangmanClientTest {
     }
     
     private void run() {
-        Thread threadClient = new Thread(new ClientThread());
+        ClientThread clientThread = new ClientThread();
+                
+        Thread threadClient = new Thread(clientThread);
         threadClient.setName("Client");
         threadClient.start();
     }

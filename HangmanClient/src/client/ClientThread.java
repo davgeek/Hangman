@@ -33,8 +33,7 @@ public class ClientThread implements Runnable {
     private Client filterOutput;
     private Server filterInput;
 
-    @Override
-    public void run() {
+    public ClientThread() {
         client = new Client(WRITE_BUFFER, READ_BUFFER);
         client.start();
 
@@ -43,10 +42,16 @@ public class ClientThread implements Runnable {
 
         filterOutput = new Client(WRITE_BUFFER, READ_BUFFER);
         filterOutput.start();
-
+        
         Network.register(client);
         Network.register(filterInput);
         Network.register(filterOutput);
+    }
+    
+
+    @Override
+    public void run() {
+        
 
         Listener listener = new Listener() {
             @Override
@@ -139,11 +144,9 @@ public class ClientThread implements Runnable {
             }
             
             if(startS.equals("hola")) {
-                PacketMessage msg = new PacketMessage();
-                msg.word = "Hola";
-                filterOutput.sendTCP(msg);
+                filterOutput.sendTCP(new PacketMessage("hola"));
             }
-        }
+       }
 
     }
     
@@ -154,6 +157,16 @@ public class ClientThread implements Runnable {
     public void sendToServer(Object o) {
         client.sendTCP(o);
     }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public String getGameWord() {
+        return gameWord;
+    }
+    
+    
 
     private String inputStr(String title) {
         String input = (String) JOptionPane.showInputDialog(null, "Valor:", title, JOptionPane.QUESTION_MESSAGE,

@@ -29,9 +29,11 @@ public class View extends javax.swing.JFrame implements Runnable {
     boolean flag2=true;
     public String nxtPlayer;
     public String gameMsg;
-     Control con;
-     String namePlayer;
-     String fallido;
+    Control con;
+    String namePlayer;
+    String fallido;
+    
+    
     
     public int getI() {
         return i;
@@ -51,6 +53,7 @@ public class View extends javax.swing.JFrame implements Runnable {
 
   
     public View() throws UnknownHostException {
+        
         initComponents();
         boom.setVisible(false);
         con= new Control();
@@ -71,10 +74,10 @@ public class View extends javax.swing.JFrame implements Runnable {
         imgs[5] = new ImageIcon(getClass().getResource("/Ahorcado/im6.jpg"));
 
         //botones para las letras
-        btns[1] = jButton2;
-        btns[2] = jButton3;
-        btns[3] = jButton4;
-        btns[4] = jButton5;
+        btns[1] = btnA;
+        btns[2] = btnB;
+        btns[3] = btnC;
+        btns[4] = btnD;
         btns[5] = jButton6;
         btns[6] = jButton7;
         btns[7] = jButton8;
@@ -300,10 +303,10 @@ public class View extends javax.swing.JFrame implements Runnable {
         jButton29 = new javax.swing.JButton();
         time = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        btnA = new javax.swing.JButton();
+        btnB = new javax.swing.JButton();
+        btnC = new javax.swing.JButton();
+        btnD = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
@@ -386,30 +389,30 @@ public class View extends javax.swing.JFrame implements Runnable {
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Fondo-de-pantalla-Moment-in-space-CXIII-by-Funerium.jpg"))); // NOI18N
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(-320, 0, 820, 730));
 
-        jButton2.setBackground(new java.awt.Color(255, 255, 255));
-        jButton2.setFont(new java.awt.Font("Consolas", 0, 18)); // NOI18N
-        jButton2.setText("A");
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 460, -1, -1));
+        btnA.setBackground(new java.awt.Color(255, 255, 255));
+        btnA.setFont(new java.awt.Font("Consolas", 0, 18)); // NOI18N
+        btnA.setText("A");
+        jPanel1.add(btnA, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 460, -1, -1));
 
-        jButton3.setBackground(new java.awt.Color(255, 255, 255));
-        jButton3.setFont(new java.awt.Font("Consolas", 0, 18)); // NOI18N
-        jButton3.setText("B");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnB.setBackground(new java.awt.Color(255, 255, 255));
+        btnB.setFont(new java.awt.Font("Consolas", 0, 18)); // NOI18N
+        btnB.setText("B");
+        btnB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnBActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 460, -1, -1));
+        jPanel1.add(btnB, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 460, -1, -1));
 
-        jButton4.setBackground(new java.awt.Color(255, 255, 255));
-        jButton4.setFont(new java.awt.Font("Consolas", 0, 18)); // NOI18N
-        jButton4.setText("C");
-        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 460, -1, -1));
+        btnC.setBackground(new java.awt.Color(255, 255, 255));
+        btnC.setFont(new java.awt.Font("Consolas", 0, 18)); // NOI18N
+        btnC.setText("C");
+        jPanel1.add(btnC, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 460, -1, -1));
 
-        jButton5.setBackground(new java.awt.Color(255, 255, 255));
-        jButton5.setFont(new java.awt.Font("Consolas", 0, 18)); // NOI18N
-        jButton5.setText("D");
-        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 460, -1, -1));
+        btnD.setBackground(new java.awt.Color(255, 255, 255));
+        btnD.setFont(new java.awt.Font("Consolas", 0, 18)); // NOI18N
+        btnD.setText("D");
+        jPanel1.add(btnD, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 460, -1, -1));
 
         jButton6.setBackground(new java.awt.Color(255, 255, 255));
         jButton6.setFont(new java.awt.Font("Consolas", 0, 18)); // NOI18N
@@ -554,9 +557,9 @@ public class View extends javax.swing.JFrame implements Runnable {
         
     }//GEN-LAST:event_jButton29ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void btnBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_btnBActionPerformed
 
     private void jiniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jiniciarActionPerformed
        
@@ -632,6 +635,10 @@ public class View extends javax.swing.JFrame implements Runnable {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel boom;
+    private javax.swing.JButton btnA;
+    private javax.swing.JButton btnB;
+    private javax.swing.JButton btnC;
+    private javax.swing.JButton btnD;
     public javax.swing.JButton btnTest;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
@@ -644,7 +651,6 @@ public class View extends javax.swing.JFrame implements Runnable {
     private javax.swing.JButton jButton17;
     private javax.swing.JButton jButton18;
     private javax.swing.JButton jButton19;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton20;
     private javax.swing.JButton jButton21;
     private javax.swing.JButton jButton22;
@@ -654,9 +660,6 @@ public class View extends javax.swing.JFrame implements Runnable {
     private javax.swing.JButton jButton26;
     private javax.swing.JButton jButton27;
     private javax.swing.JButton jButton29;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;

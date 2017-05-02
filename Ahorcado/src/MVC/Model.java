@@ -14,9 +14,9 @@ public class Model {
     public String word;
     public int err;
     public String turn;
-     String winner;
-     String fallido;
-     String asierto;
+    String winner;
+    String fallido;
+    String asierto;
 
     public Model() {
     }
