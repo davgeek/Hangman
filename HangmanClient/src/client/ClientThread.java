@@ -146,6 +146,14 @@ public class ClientThread implements Runnable {
         }
 
     }
+    
+    public void sendToNext(Object o) {
+        filterOutput.sendTCP(o);
+    }
+    
+    public void sendToServer(Object o) {
+        client.sendTCP(o);
+    }
 
     private String inputStr(String title) {
         String input = (String) JOptionPane.showInputDialog(null, "Valor:", title, JOptionPane.QUESTION_MESSAGE,

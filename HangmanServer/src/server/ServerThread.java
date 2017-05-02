@@ -7,9 +7,6 @@ import domain.Player;
 import packets.*;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 import utils.HangmanLexicon;
 import utils.Network;
 
@@ -22,6 +19,7 @@ public class ServerThread implements Runnable {
     public final static int WRITE_BUFFER = 256 * 1024;
     public final static int READ_BUFFER = 256 * 1024;
     private Server server;
+    private boolean isStart = false;
     
     private ArrayList <Player> players = new ArrayList();
     private HangmanLexicon hangmanWords;
@@ -48,12 +46,16 @@ public class ServerThread implements Runnable {
                 
                 if (object instanceof Packet) {
                     if(object instanceof PacketClientConnect) {
-                        PacketClientConnect pc = (PacketClientConnect) object;
-                        if(players.contains(new Player(pc.getNickname()))){
-                            connection.sendTCP(new PacketError("Nickname ya registrado"));
+                        if(!isStart){
+                            PacketClientConnect pc = (PacketClientConnect) object;
+                            if (players.contains(new Player(pc.getNickname()))) {
+                                connection.sendTCP(new PacketError("Error: Nickname ya registrado"));
+                            } else {
+                                System.out.println("Nick: " + pc.getNickname());
+                                players.add(new Player(pc.getNickname(), connection));
+                            }   
                         } else {
-                            System.out.println("Nick: " + pc.getNickname());
-                            players.add(new Player(pc.getNickname(), connection));
+                            connection.sendTCP(new PacketError("Error: Juego iniciado"));
                         }
                     }
                     
@@ -62,6 +64,7 @@ public class ServerThread implements Runnable {
                         
                         PacketGameStart pgs = (PacketGameStart) object;
                         if(pgs.start){
+                            isStart = true;
                             PacketSetupGame pir = new PacketSetupGame();
                             
                             // game word
