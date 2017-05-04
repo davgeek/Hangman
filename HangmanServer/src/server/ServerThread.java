@@ -65,23 +65,29 @@ public class ServerThread implements Runnable {
                         PacketGameStart pgs = (PacketGameStart) object;
                         if(pgs.start){
                             isStart = true;
-                            PacketSetupGame pir = new PacketSetupGame();
-                            
-                            // game word
-                            String word = hangmanWords.pickWord();
-                            System.out.println("Establecer palabra. " + word);
-                            pir.gameWord = word;
-                            
-                            // create ip table
-                            for (int i = 0; i < players.size(); i++) {
-                                if(i == players.size()-1){
-                                    pir.table.put(players.get(i).getNickname(), players.get(0).getConn().getRemoteAddressTCP().getHostString());
-                                } else{
-                                    pir.table.put(players.get(i).getNickname(), players.get(i+1).getConn().getRemoteAddressTCP().getHostString());
+                            if(players.size()> 0){
+                                PacketSetupGame pir = new PacketSetupGame();
+
+                                // game word
+                                String word = hangmanWords.pickWord();
+                                System.out.println("Establecer palabra. " + word);
+                                pir.gameWord = word;
+
+                                // create ip table
+                                for (int i = 0; i < players.size(); i++) {
+                                    if (i == players.size() - 1) {
+                                        pir.table.put(players.get(i).getNickname(), players.get(0).getConn().getRemoteAddressTCP().getHostString());
+                                    } else {
+                                        pir.table.put(players.get(i).getNickname(), players.get(i + 1).getConn().getRemoteAddressTCP().getHostString());
+                                    }
+
                                 }
-                                
+                                players.get(0).getConn().sendTCP(pir);
+                            } else{
+                                System.out.println("Juego no iniciado");
+                                connection.sendTCP(new PacketError("Faltan jugadores"));
                             }
-                            players.get(0).getConn().sendTCP(pir);
+                            
                         }
                         
                     }

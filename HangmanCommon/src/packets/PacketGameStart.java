@@ -10,5 +10,5 @@ package packets;
  * @author davgeek
  */
 public class PacketGameStart extends Packet {
-    public boolean start = false;
+    public boolean start = true;
 }

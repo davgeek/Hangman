@@ -10,11 +10,17 @@ package packets;
  * @author davgeek
  */
 public class PacketMessage extends Packet {
-    public String word;
+    private String word;
 
+    public PacketMessage() {
+    }
+    
     public PacketMessage(String word) {
         this.word = word;
     }
-    
+
+    public String getWord() {
+        return word;
+    }
     
 }

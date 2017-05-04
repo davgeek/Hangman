@@ -5,7 +5,13 @@
  */
 package client;
 
+import client.nal.FilterInput;
+import client.nal.FilterOuput;
+import client.queue.PacketQueue;
 import java.io.IOException;
+import javax.swing.JOptionPane;
+import packets.PacketGameStart;
+import packets.PacketMessage;
 
 /**
  *
@@ -17,11 +23,48 @@ public class HangmanClientTest {
     }
     
     private void run() {
-        ClientThread clientThread = new ClientThread();
-                
-        Thread threadClient = new Thread(clientThread);
+        PacketQueue queueIn = new PacketQueue("input");
+        PacketQueue queueOut = new PacketQueue("output");
+        
+        FilterInput input = new FilterInput(queueIn);
+        
+        FilterControl control = new FilterControl(queueOut);
+        queueIn.attach(control);
+
+        FilterOuput output = new FilterOuput();
+        queueOut.attach(output);
+        
+        Thread threadClient = new Thread(control);
         threadClient.setName("Client");
         threadClient.start();
+
+        Thread inputThread = new Thread(input);
+        inputThread.setName("Input");
+        inputThread.start();
+
+        Thread outputThread = new Thread(output);
+        outputThread.setName("Output");
+        outputThread.start();
+
+        //hard coded data
+        control.connectToServer("localhost", "dav");
+        control.login();
+        control.sendToServer(new PacketGameStart());
+        
+        
+        String msg = inputStr("Mensaje");
+        control.sendToNext(new PacketMessage(msg));
+        
+        
+    }
+    
+    private String inputStr(String title) {
+        String input = (String) JOptionPane.showInputDialog(null, "Valor:", title, JOptionPane.QUESTION_MESSAGE,
+                null, null, "");
+        if (input == null || input.trim().length() == 0) {
+            System.exit(1);
+        }
+        return input.trim();
     }
     
 }
