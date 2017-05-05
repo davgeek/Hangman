@@ -111,18 +111,11 @@ public class FilterControl implements Runnable, Observer {
     @Override
     public synchronized void update(Observable o, Object object) {
         if (object instanceof Packet) {
-         
-            if (object instanceof PacketMessage) {
-                addToGui(object);
-            }
-            
-            if(object instanceof PacketUserMove) {
-                addToGui(object);
-            }
-
             if (object instanceof PacketSetupGame) {
                 PacketSetupGame pir = (PacketSetupGame) object;
                 queueOut.addMsg(pir);
+            } else {
+                addToGui(object);
             }
         }
     }

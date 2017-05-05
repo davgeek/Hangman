@@ -800,5 +800,15 @@ public class View extends javax.swing.JFrame implements Observer{
                 System.out.println("Soy yo: " + pum.getC());
             }
         }
+        
+        if(arg instanceof PacketGameStart){
+            PacketGameStart pgs = (PacketGameStart) arg;
+            if(pgs.start){
+                activateAllButtons();
+                updateGraphics();
+                updateHangmanWord();
+            }
+            controller.sendToNext(pgs);
+        }
     }
 }
