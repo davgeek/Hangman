@@ -11,12 +11,25 @@ package packets;
  */
 public class PacketNewWord extends Packet{
     private String word;
+    private String last;
 
-    public PacketNewWord(String word) {
+    public PacketNewWord() {
+    }
+    
+    
+
+    public PacketNewWord(String word, String last ) {
         this.word = word;
+        this.last = last;
     }
 
     public String getWord() {
         return word;
-    }    
+    }
+
+    public String getLast() {
+        return last;
+    }
+    
+    
 }

@@ -67,7 +67,7 @@ public class ServerThread implements Runnable {
                         System.out.println("Iniciar juego");
                         
                         PacketGameStart pgs = (PacketGameStart) object;
-                        if(pgs.isStart()){
+                        if(!isStart){
                             isStart = true;
                             if(players.size()> 0){
                                 PacketSetupGame pir = new PacketSetupGame();
@@ -91,10 +91,15 @@ public class ServerThread implements Runnable {
                                 System.out.println("Juego no iniciado");
                                 connection.sendTCP(new PacketError("Faltan jugadores"));
                             }
-                            
+                        }else{
+                            // game word
+                            String word = hangmanWords.pickWord();
+                            System.out.println("Nueva palabra. " + word);
+                            connection.sendTCP(new PacketNewWord(word, players.get(players.size()-1).getNickname()));
                         }
-                        
                     }
+                        
+                    
                 }
             }
             

@@ -52,12 +52,10 @@ public class FilterControl implements Runnable, Observer {
                         System.out.println(pe.getError());
                     }
 
-                    if (object instanceof PacketGameStart) {
-                        PacketGameStart pgs = (PacketGameStart) object;
-                        if (pgs.isStart()) {
-                            start = true;
-                        }
-                        System.out.println("Iniciar juego");
+                    if(object instanceof PacketNewWord){
+                        PacketNewWord newWord = (PacketNewWord) object;
+                        gameWord = newWord.getWord();
+                        queueOut.addMsg(newWord);
                     }
 
                     if (object instanceof PacketSetupGame) {
@@ -115,7 +113,15 @@ public class FilterControl implements Runnable, Observer {
                 gameWord = pir.gameWord;
                 System.out.println("Palabra: " + gameWord);
                 queueOut.addMsg(pir);
-            } else {
+            } else if(object instanceof PacketNewWord){
+                PacketNewWord newWord = (PacketNewWord) object;
+                gameWord = newWord.getWord();
+                System.out.println("Me llego: " + gameWord);
+                if(!newWord.getLast().equalsIgnoreCase(nickname)){
+                    queueOut.addMsg(newWord);
+                }
+            }
+            else {
                 addToGui(object);
             }
         }
