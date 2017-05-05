@@ -7,13 +7,13 @@ import javax.swing.ImageIcon;
 public class HangingMan {
 
     Model gameModel;
-    String zersLives = "/hangman_mvc/Images/hangman_1Lives.png";
-    String oneLive = "/hangman_mvc/Images/hangman_1Lives.png";
-    String twoLives = "/hangman_mvc/Images/hangman_1Lives.png";
-    String threeLives = "/hangman_mvc/Images/hangman_2Lives.png";
-    String fourLives = "/hangman_mvc/Images/hangman_3Lives.png";
-    String fiveLives = "/hangman_mvc/Images/hangman_4Lives.png";
-    String sixLives = "/hangman_mvc/Images/hangman_5Lives.png";
+    String zersLives = "/hangman/Images/hangman_0Lives.png";
+    String oneLive = "/hangman/Images/hangman_1Lives.png";
+    String twoLives = "/hangman/Images/hangman_1Lives.png";
+    String threeLives = "/hangman/Images/hangman_2Lives.png";
+    String fourLives = "/hangman/Images/hangman_3Lives.png";
+    String fiveLives = "/hangman/Images/hangman_4Lives.png";
+    String sixLives = "/hangman/Images/hangman_5Lives.png";
 
     public HangingMan(Model gameModel) {
         this.gameModel = gameModel;
@@ -24,32 +24,28 @@ public class HangingMan {
         switch (gameModel.getLivesLeft()) {
             case 0:
                 gameModel.setLivesLeft(0);
-                return new javax.swing.ImageIcon(getClass().getResource("/hangman_mvc/Images/hangman_0Lives.png"));
+                return new javax.swing.ImageIcon(getClass().getResource("/hangman/Images/hangman_0Lives.png"));
             case 1:
                 gameModel.setLivesLeft(1);
-                return new javax.swing.ImageIcon(getClass().getResource("/hangman_mvc/Images/hangman_1Lives.png"));
+                return new javax.swing.ImageIcon(getClass().getResource("/hangman/Images/hangman_1Lives.png"));
 
             case 2:
                 gameModel.setLivesLeft(2);
-                return new javax.swing.ImageIcon(getClass().getResource("/hangman_mvc/Images/hangman_2Lives.png"));
+                return new javax.swing.ImageIcon(getClass().getResource("/hangman/Images/hangman_2Lives.png"));
             case 3:
                 gameModel.setLivesLeft(3);
-                return new javax.swing.ImageIcon(getClass().getResource("/hangman_mvc/Images/hangman_3Lives.png"));
+                return new javax.swing.ImageIcon(getClass().getResource("/hangman/Images/hangman_3Lives.png"));
             case 4:
                 gameModel.setLivesLeft(4);
-                return new javax.swing.ImageIcon(getClass().getResource("/hangman_mvc/Images/hangman_4Lives.png"));
+                return new javax.swing.ImageIcon(getClass().getResource("/hangman/Images/hangman_4Lives.png"));
             case 5:
                 gameModel.setLivesLeft(5);
-                return new javax.swing.ImageIcon(getClass().getResource("/hangman_mvc/Images/hangman_5Lives.png"));
+                return new javax.swing.ImageIcon(getClass().getResource("/hangman/Images/hangman_5Lives.png"));
             case 6:
                 gameModel.setLivesLeft(6);
-                return new javax.swing.ImageIcon(getClass().getResource("/hangman_mvc/Images/hangman_6Lives.png"));
+                return new javax.swing.ImageIcon(getClass().getResource("/hangman/Images/hangman_6Lives.png"));
         }
         return null;
 
-    }
-    
-    public ImageIcon displayPrize(){
-        return new javax.swing.ImageIcon(getClass().getResource("/hangman_mvc/Images/kitten.jpg"));
     }
 }

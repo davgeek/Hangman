@@ -5,20 +5,41 @@
  */
 package hangmangui.mvc;
 
+import client.FilterControl;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import packets.Packet;
+import packets.PacketMessage;
+
 /**
  *
  * @author davgeek
  */
 public class Model {
+    
     boolean guessed;
     int correctGuessTotal;
-    int livesLeft;
+    private int livesLeft;
     String wordToGuess;
     StringBuffer guessedSoFarStringBuffer;
-    
+    FilterControl filter;
 
     public Model() {
         this.livesLeft = 6;
+    }
+
+    public Model(FilterControl filter) {
+        this.filter = filter;
+    }
+    
+    public void connect(String host){
+        filter.connectToServer(host);
+    }
+    
+    public void sendToNext(Packet p){
+        filter.sendToNext(p);
     }
 
     boolean isTheWholeWordGuessed() {
@@ -34,16 +55,19 @@ public class Model {
     }
 
     void initilizeguessedSoFarStringBuffer() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        wordToGuess = filter.getGameWord();
+        System.out.println("MOD: " + wordToGuess);
         guessedSoFarStringBuffer = new StringBuffer();
         for (int i = 0; i < wordToGuess.length(); i++) {
             guessedSoFarStringBuffer.append("_");
         }
     }
-
-    String getSecretWord() {
-        return "word";
-    }
-
+    
     private String putInSpaces(String aWord) {
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < aWord.length(); i++) {
@@ -59,7 +83,5 @@ public class Model {
     public void setLivesLeft(int livesLeft) {
         this.livesLeft = livesLeft;
     }
-    
-    
     
 }

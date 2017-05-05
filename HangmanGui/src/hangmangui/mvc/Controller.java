@@ -1,25 +1,25 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package hangmangui.mvc;
+
+import packets.Packet;
+import packets.PacketMessage;
+import packets.PacketUserMove;
 
 /**
  *
  * @author davgeek
  */
 public class Controller {
-    private Model gameModel;
+    private Model model;
 
     public Controller(Model model) {
-        this.gameModel = model;
+        this.model = model;
     }
     
     void tryWith(char c) {
-        if (gameModel.getLivesLeft() > 0 && gameModel.guessed == false) {
+        model.sendToNext(new PacketUserMove(model.filter.getNickname(), c));
+        if (model.getLivesLeft() > 0 && model.guessed == false) {
+            model.sendToNext(new PacketMessage(c+""));
             boolean wasTheGuessCorrect = wasTheGuessCorrect(c);
-
             if (wasTheGuessCorrect == true) {
                 handleCorrectGuess(c);
             } else {
@@ -27,26 +27,34 @@ public class Controller {
             }
         }
     }
+    
+    void tryMove(char c) {
+        boolean wasTheGuessCorrect = wasTheGuessCorrect(c);
+        if (wasTheGuessCorrect == true) {
+            handleCorrectGuess(c);
+        } else {
+            handleWrongGuess();
+        }        
+    }
 
     void reset() {
-        gameModel.guessed = false;
-        gameModel.correctGuessTotal = 0;
-        gameModel.setLivesLeft(6);
+        model.filter.restart();
+        model.guessed = false;
+        model.correctGuessTotal = 0;
+        model.setLivesLeft(6);        
         initilizeGuessedSoFarStringBuffer();
     }
 
-    void setLives(int amount) {
-        gameModel.livesLeft = amount;
-    }
-
     void initilizeGuessedSoFarStringBuffer() {
-        gameModel.initilizeguessedSoFarStringBuffer();
+        model.wordToGuess = model.filter.getGameWord();
+        model.initilizeguessedSoFarStringBuffer();
+        System.out.println("gues:" + model.wordToGuess);
     }
 
     boolean wasTheGuessCorrect(char guessLetter) {
         boolean match = false;
-        for (int w = 0; w < gameModel.wordToGuess.length(); w++) {
-            if (gameModel.wordToGuess.charAt(w) == guessLetter) {
+        for (int w = 0; w < model.wordToGuess.length(); w++) {
+            if (model.wordToGuess.toLowerCase().charAt(w) == guessLetter) {
                 match = true;
             }
         }
@@ -54,16 +62,20 @@ public class Controller {
     }
 
     void handleCorrectGuess(char in) {
-        for (int w = 0; w < gameModel.wordToGuess.length(); w++) {
-            if (gameModel.wordToGuess.charAt(w) == in) {
-                gameModel.setHangmamWordIndexTo(w, in);
-                gameModel.correctGuessTotal++;
+        for (int w = 0; w < model.wordToGuess.length(); w++) {
+            if (model.wordToGuess.toLowerCase().charAt(w) == in) {
+                model.setHangmamWordIndexTo(w, in);
+                model.correctGuessTotal++;
             }
         }
     }
 
     void handleWrongGuess() {
-        gameModel.setLivesLeft(gameModel.getLivesLeft()-1);
+        model.setLivesLeft(model.getLivesLeft()-1);
+    }
+    
+    void sendToNext(Packet p){
+        model.sendToNext(p);
     }
     
 }

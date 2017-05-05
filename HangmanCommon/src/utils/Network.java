@@ -35,5 +35,7 @@ public class Network {
         kryo.register(PacketError.class);
         kryo.register(PacketSetupGame.class);
         kryo.register(PacketMessage.class);
+        kryo.register(PacketNewWord.class);
+        kryo.register(PacketUserMove.class);
     }
 }

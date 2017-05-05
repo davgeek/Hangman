@@ -7,6 +7,7 @@ import java.io.IOException;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import java.net.InetAddress;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JOptionPane;
@@ -23,14 +24,16 @@ public class FilterControl implements Runnable, Observer {
     public final static int READ_BUFFER = 256 * 1024;
 
     private String nickname;
-    private String gameWord;
+    private String gameWord = "";
     private boolean start = false;
 
     private Client client;
     private PacketQueue queueOut;
+    private PacketQueue queueGui;
     
-    public FilterControl(PacketQueue queueOut) {
+    public FilterControl(PacketQueue queueOut, PacketQueue queueGui) {
         this.queueOut = queueOut;
+        this.queueGui = queueGui;
         client = new Client(WRITE_BUFFER, READ_BUFFER);
         client.start();
         Network.register(client);
@@ -80,9 +83,9 @@ public class FilterControl implements Runnable, Observer {
         client.sendTCP(o);
     }
     
-    public void connectToServer(String host, String nickname){
+    public void connectToServer(String host){
         try {
-            client.connect(1000, host, Network.S_PORT);
+            client.connect(5000, host, Network.S_PORT);
         } catch (IOException ex) {
             ex.printStackTrace();
         }        
@@ -90,32 +93,31 @@ public class FilterControl implements Runnable, Observer {
         this.nickname = nickname;
     }
     
-    public void login(){
+    public void login(String nickname){
+        this.nickname = nickname;
         PacketClientConnect pc = new PacketClientConnect();
-        pc.setNickname(nickname);
+        pc.setNickname(this.nickname);
         queueOut.addMsg(pc);
         client.sendTCP(pc);
+    }
+    
+    public void start(){
+        client.sendTCP(new PacketGameStart());
+    }
+    public void restart(){
+        client.sendTCP(new PacketGameStart());
     }
     
     @Override
     public synchronized void update(Observable o, Object object) {
         if (object instanceof Packet) {
-            if (object instanceof PacketError) {
-                PacketError pe = (PacketError) object;
-                System.out.println(pe.getError());
-            }
-
-            if (object instanceof PacketGameStart) {
-                PacketGameStart pgs = (PacketGameStart) object;
-                if (pgs.start) {
-                    start = true;
-                }
-                System.out.println("Iniciar juego");
-            }
-
+         
             if (object instanceof PacketMessage) {
-                PacketMessage msg = (PacketMessage) object;
-                System.out.println("Mensaje: " + msg.getWord());
+                addToGui(object);
+            }
+            
+            if(object instanceof PacketUserMove) {
+                addToGui(object);
             }
 
             if (object instanceof PacketSetupGame) {
@@ -124,5 +126,16 @@ public class FilterControl implements Runnable, Observer {
             }
         }
     }
+    
+    private void addToGui(Object o){
+        queueGui.addMsg((Packet) o);
+    }
 
+    public String getGameWord() {
+        return gameWord;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
 }

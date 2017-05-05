@@ -1,23 +1,39 @@
 
 package hangmangui.mvc;
 
+import java.util.Observable;
+import java.util.Observer;
+import login.DlgLogin;
 import javax.swing.JOptionPane;
+import packets.PacketGameStart;
+import packets.PacketMessage;
+import packets.PacketUserMove;
 
 
-public class View extends javax.swing.JFrame {
+public class View extends javax.swing.JFrame implements Observer{
 
-    Model gameModel;
+    Model model;
     Controller controller;
     HangingMan hangingMan;
     String prevCatagory;
+    DlgLogin login;
+    String nick;
+    String server;
 
-    public View(Model gM, Controller controller) {
+    public View(Model model, Controller controller) {
         initComponents();
-        this.gameModel = gM;
+        this.model = model;
         this.controller = controller;
-        this.hangingMan = new HangingMan(gameModel);
-        //this.musicPlayer = new MusicPlayer();
-        this.prevCatagory = "";
+        this.hangingMan = new HangingMan(model);
+        
+        this.login = new DlgLogin(this, rootPaneCheckingEnabled);
+        login.setVisible(true);
+        
+        this.server = login.getServer();
+        model.connect(server);
+        
+        this.nick = login.getUser();
+        model.filter.login(nick);        
     }
 
     
@@ -27,9 +43,6 @@ public class View extends javax.swing.JFrame {
 
         basePanel = new javax.swing.JPanel();
         leftPanel = new javax.swing.JPanel();
-        Menu_Panel = new javax.swing.JPanel();
-        jButton_StartGame = new javax.swing.JButton();
-        jButton_Resolve = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jTextField_HangManWord = new javax.swing.JTextField();
@@ -47,19 +60,21 @@ public class View extends javax.swing.JFrame {
         jButton_K = new javax.swing.JButton();
         jButton_L = new javax.swing.JButton();
         jButtonM = new javax.swing.JButton();
-        jButtonN = new javax.swing.JButton();
+        jButton_N = new javax.swing.JButton();
+        jButton_Ñ = new javax.swing.JButton();
         jButton_O = new javax.swing.JButton();
         jButton_P = new javax.swing.JButton();
-        jButton_Q = new javax.swing.JButton();
-        jButton_R = new javax.swing.JButton();
-        jButton_S = new javax.swing.JButton();
-        jButton_T = new javax.swing.JButton();
+        jButton_Z = new javax.swing.JButton();
         jButton_U = new javax.swing.JButton();
         jButton_V = new javax.swing.JButton();
+        jButton_Q = new javax.swing.JButton();
+        jButton_R = new javax.swing.JButton();
         jButton_W = new javax.swing.JButton();
+        jButton_S = new javax.swing.JButton();
         jButton_X = new javax.swing.JButton();
+        jButton_T = new javax.swing.JButton();
         jButton_Y = new javax.swing.JButton();
-        jButton_Z = new javax.swing.JButton();
+        jButton_StartGame = new javax.swing.JButton();
         RightPanel = new javax.swing.JPanel();
         hangmanGraphic = new javax.swing.JLabel();
 
@@ -71,57 +86,15 @@ public class View extends javax.swing.JFrame {
 
         leftPanel.setBackground(new java.awt.Color(255, 255, 255));
 
-        Menu_Panel.setBackground(new java.awt.Color(255, 255, 255));
-        Menu_Panel.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 153, 153)), "Menu", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 0, 18))); // NOI18N
-
-        jButton_StartGame.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        jButton_StartGame.setText("START GAME / RESET");
-        jButton_StartGame.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_StartGameActionPerformed(evt);
-            }
-        });
-
-        jButton_Resolve.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        jButton_Resolve.setText("Resolve");
-        jButton_Resolve.setPreferredSize(new java.awt.Dimension(79, 23));
-        jButton_Resolve.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_ResolveActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout Menu_PanelLayout = new javax.swing.GroupLayout(Menu_Panel);
-        Menu_Panel.setLayout(Menu_PanelLayout);
-        Menu_PanelLayout.setHorizontalGroup(
-            Menu_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Menu_PanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(Menu_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton_StartGame, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE)
-                    .addComponent(jButton_Resolve, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        Menu_PanelLayout.setVerticalGroup(
-            Menu_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Menu_PanelLayout.createSequentialGroup()
-                .addComponent(jButton_StartGame, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton_Resolve, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(65, Short.MAX_VALUE))
-        );
-
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 102, 102)), "The Word:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 0, 14), new java.awt.Color(0, 153, 153))); // NOI18N
 
         jTextField_HangManWord.setEditable(false);
         jTextField_HangManWord.setBackground(new java.awt.Color(0, 0, 0));
         jTextField_HangManWord.setFont(new java.awt.Font("Arial", 0, 28)); // NOI18N
         jTextField_HangManWord.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField_HangManWord.setText("  H A N G M A N");
+        jTextField_HangManWord.setText("AHORCADO");
         jTextField_HangManWord.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField_HangManWordActionPerformed(evt);
@@ -132,17 +105,14 @@ public class View extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jTextField_HangManWord)
-                .addContainerGap())
+            .addComponent(jTextField_HangManWord)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(18, 18, 18)
                 .addComponent(jTextField_HangManWord, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -152,7 +122,7 @@ public class View extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(152, 152, 152))
+                .addGap(0, 0, 0))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -163,7 +133,6 @@ public class View extends javax.swing.JFrame {
         );
 
         Keyboard_Panel.setBackground(new java.awt.Color(255, 255, 255));
-        Keyboard_Panel.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 153, 153)), "Letters", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 0, 18))); // NOI18N
         Keyboard_Panel.setLayout(new java.awt.GridLayout(6, 0, -1, -1));
 
         jButton_A.setText("A");
@@ -283,14 +252,23 @@ public class View extends javax.swing.JFrame {
         });
         Keyboard_Panel.add(jButtonM);
 
-        jButtonN.setText("N");
-        jButtonN.setPreferredSize(new java.awt.Dimension(85, 57));
-        jButtonN.addActionListener(new java.awt.event.ActionListener() {
+        jButton_N.setText("N");
+        jButton_N.setPreferredSize(new java.awt.Dimension(85, 57));
+        jButton_N.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonNActionPerformed(evt);
+                jButton_NActionPerformed(evt);
             }
         });
-        Keyboard_Panel.add(jButtonN);
+        Keyboard_Panel.add(jButton_N);
+
+        jButton_Ñ.setText("Ñ");
+        jButton_Ñ.setPreferredSize(new java.awt.Dimension(85, 57));
+        jButton_Ñ.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_ÑActionPerformed(evt);
+            }
+        });
+        Keyboard_Panel.add(jButton_Ñ);
 
         jButton_O.setText("O");
         jButton_O.setPreferredSize(new java.awt.Dimension(85, 57));
@@ -310,41 +288,14 @@ public class View extends javax.swing.JFrame {
         });
         Keyboard_Panel.add(jButton_P);
 
-        jButton_Q.setText("Q");
-        jButton_Q.setPreferredSize(new java.awt.Dimension(85, 57));
-        jButton_Q.addActionListener(new java.awt.event.ActionListener() {
+        jButton_Z.setText("Z");
+        jButton_Z.setPreferredSize(new java.awt.Dimension(85, 57));
+        jButton_Z.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_QActionPerformed(evt);
+                jButton_ZActionPerformed(evt);
             }
         });
-        Keyboard_Panel.add(jButton_Q);
-
-        jButton_R.setText("R");
-        jButton_R.setPreferredSize(new java.awt.Dimension(85, 57));
-        jButton_R.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_RActionPerformed(evt);
-            }
-        });
-        Keyboard_Panel.add(jButton_R);
-
-        jButton_S.setText("S");
-        jButton_S.setPreferredSize(new java.awt.Dimension(85, 57));
-        jButton_S.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_SActionPerformed(evt);
-            }
-        });
-        Keyboard_Panel.add(jButton_S);
-
-        jButton_T.setText("T");
-        jButton_T.setPreferredSize(new java.awt.Dimension(85, 57));
-        jButton_T.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_TActionPerformed(evt);
-            }
-        });
-        Keyboard_Panel.add(jButton_T);
+        Keyboard_Panel.add(jButton_Z);
 
         jButton_U.setText("U");
         jButton_U.setPreferredSize(new java.awt.Dimension(85, 57));
@@ -364,6 +315,24 @@ public class View extends javax.swing.JFrame {
         });
         Keyboard_Panel.add(jButton_V);
 
+        jButton_Q.setText("Q");
+        jButton_Q.setPreferredSize(new java.awt.Dimension(85, 57));
+        jButton_Q.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_QActionPerformed(evt);
+            }
+        });
+        Keyboard_Panel.add(jButton_Q);
+
+        jButton_R.setText("R");
+        jButton_R.setPreferredSize(new java.awt.Dimension(85, 57));
+        jButton_R.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_RActionPerformed(evt);
+            }
+        });
+        Keyboard_Panel.add(jButton_R);
+
         jButton_W.setText("W");
         jButton_W.setPreferredSize(new java.awt.Dimension(85, 57));
         jButton_W.addActionListener(new java.awt.event.ActionListener() {
@@ -372,6 +341,15 @@ public class View extends javax.swing.JFrame {
             }
         });
         Keyboard_Panel.add(jButton_W);
+
+        jButton_S.setText("S");
+        jButton_S.setPreferredSize(new java.awt.Dimension(85, 57));
+        jButton_S.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_SActionPerformed(evt);
+            }
+        });
+        Keyboard_Panel.add(jButton_S);
 
         jButton_X.setText("X");
         jButton_X.setPreferredSize(new java.awt.Dimension(85, 57));
@@ -382,6 +360,15 @@ public class View extends javax.swing.JFrame {
         });
         Keyboard_Panel.add(jButton_X);
 
+        jButton_T.setText("T");
+        jButton_T.setPreferredSize(new java.awt.Dimension(85, 57));
+        jButton_T.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_TActionPerformed(evt);
+            }
+        });
+        Keyboard_Panel.add(jButton_T);
+
         jButton_Y.setText("Y");
         jButton_Y.setPreferredSize(new java.awt.Dimension(85, 57));
         jButton_Y.addActionListener(new java.awt.event.ActionListener() {
@@ -391,36 +378,45 @@ public class View extends javax.swing.JFrame {
         });
         Keyboard_Panel.add(jButton_Y);
 
-        jButton_Z.setText("Z");
-        jButton_Z.setPreferredSize(new java.awt.Dimension(85, 57));
-        jButton_Z.addActionListener(new java.awt.event.ActionListener() {
+        jButton_StartGame.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        jButton_StartGame.setText("Iniciar");
+        jButton_StartGame.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_ZActionPerformed(evt);
+                jButton_StartGameActionPerformed(evt);
             }
         });
-        Keyboard_Panel.add(jButton_Z);
 
         javax.swing.GroupLayout leftPanelLayout = new javax.swing.GroupLayout(leftPanel);
         leftPanel.setLayout(leftPanelLayout);
         leftPanelLayout.setHorizontalGroup(
             leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, leftPanelLayout.createSequentialGroup()
-                .addGroup(leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(Keyboard_Panel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(Menu_Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(leftPanelLayout.createSequentialGroup()
+                .addGroup(leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Keyboard_Panel, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
+            .addGroup(leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(leftPanelLayout.createSequentialGroup()
+                    .addGap(16, 16, 16)
+                    .addComponent(jButton_StartGame, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(289, Short.MAX_VALUE)))
         );
         leftPanelLayout.setVerticalGroup(
             leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(leftPanelLayout.createSequentialGroup()
-                .addComponent(Menu_Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
+                .addGap(66, 66, 66)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(Keyboard_Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
+            .addGroup(leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(leftPanelLayout.createSequentialGroup()
+                    .addGap(16, 16, 16)
+                    .addComponent(jButton_StartGame, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(496, Short.MAX_VALUE)))
         );
+
+        Keyboard_Panel.getAccessibleContext().setAccessibleName("Letras");
 
         RightPanel.setBackground(new java.awt.Color(255, 255, 255));
         RightPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -454,8 +450,8 @@ public class View extends javax.swing.JFrame {
             .addGroup(basePanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(basePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(leftPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(RightPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(RightPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(leftPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -467,9 +463,7 @@ public class View extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(basePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(basePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 707, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -483,9 +477,7 @@ public class View extends javax.swing.JFrame {
     //Keyboard button 'E'
     private void jButton_EActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_EActionPerformed
         controller.tryWith('e');
-
         updateView();
-
         jButton_E.setEnabled(false);
     }//GEN-LAST:event_jButton_EActionPerformed
 
@@ -498,13 +490,13 @@ public class View extends javax.swing.JFrame {
         jButton_J.setEnabled(false);
     }//GEN-LAST:event_jButton_JActionPerformed
 
-    private void jButtonNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNActionPerformed
+    private void jButton_NActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_NActionPerformed
         controller.tryWith('n');
 
         updateView();
 
-        jButtonN.setEnabled(false);
-    }//GEN-LAST:event_jButtonNActionPerformed
+        jButton_N.setEnabled(false);
+    }//GEN-LAST:event_jButton_NActionPerformed
 
     private void jButton_PActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_PActionPerformed
         controller.tryWith('p');
@@ -693,34 +685,26 @@ public class View extends javax.swing.JFrame {
     // </editor-fold>
     
     
+    private void jButton_ÑActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ÑActionPerformed
+        controller.tryWith('ñ');
+        updateView();
+        jButton_Ñ.setEnabled(false);
+    }//GEN-LAST:event_jButton_ÑActionPerformed
+
     private void jButton_StartGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_StartGameActionPerformed
-  
-       
+        jButton_StartGame.setText("Reiniciar");
         controller.reset();
-        
         activateAllButtons();
-               
         updateGraphics();
-        
         updateHangmanWord();
-        
-        
-//        if (!(soundButton.isSelected()) && (musicPlayer.playing == false)) {   //make here a method isPlaying?
-//            musicPlayer.play(gameModel.wordCatagory);
-//        }   
-
     }//GEN-LAST:event_jButton_StartGameActionPerformed
-
-    private void jButton_ResolveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ResolveActionPerformed
-        jTextField_HangManWord.setText(gameModel.getSecretWord());
-        controller.setLives(0);
-    }//GEN-LAST:event_jButton_ResolveActionPerformed
 
     private void updateView() {
         updateHangmanWord();
         updateGraphics();
         
-        if (gameModel.isTheWholeWordGuessed() == true) {
+        if (model.isTheWholeWordGuessed() == true) {
+            model.sendToNext(new PacketMessage("Gano: " + nick));
             handleWin();
         }
     }
@@ -731,16 +715,13 @@ public class View extends javax.swing.JFrame {
     
     private void handleWin(){
         int x = JOptionPane.showConfirmDialog(this, "You Won! Accept your price?", "Wow, such smart",  0);
-            if (x == 0) {
-                //hangmanGraphic.setIcon(kittenGenerator.getKitten());
-            }
-            deActivateAllButtons();
+        deActivateAllButtons();
     }
     
     
     
     private void updateHangmanWord(){
-        jTextField_HangManWord.setText(gameModel.getHangmanWord());
+        jTextField_HangManWord.setText(model.getHangmanWord());
     }
     
     
@@ -748,7 +729,7 @@ public class View extends javax.swing.JFrame {
         jButton_A.setEnabled(true);jButton_B.setEnabled(true);jButton_C.setEnabled(true);jButton_D.setEnabled(true);
         jButton_E.setEnabled(true);jButtonF.setEnabled(true);jButton_G.setEnabled(true);jButton_H.setEnabled(true);
         jButton_I.setEnabled(true);jButton_J.setEnabled(true);jButton_K.setEnabled(true);jButton_L.setEnabled(true);
-        jButtonM.setEnabled(true);jButtonN.setEnabled(true);jButton_O.setEnabled(true);jButton_P.setEnabled(true);
+        jButtonM.setEnabled(true);jButton_N.setEnabled(true);jButton_Ñ.setEnabled(true);jButton_O.setEnabled(true);jButton_P.setEnabled(true);
         jButton_Q.setEnabled(true);jButton_R.setEnabled(true);jButton_S.setEnabled(true);jButton_T.setEnabled(true);
         jButton_U.setEnabled(true);jButton_V.setEnabled(true);jButton_W.setEnabled(true);jButton_X.setEnabled(true);
         jButton_Y.setEnabled(true);jButton_Z.setEnabled(true);
@@ -758,7 +739,7 @@ public class View extends javax.swing.JFrame {
         jButton_A.setEnabled(false);jButton_B.setEnabled(false);jButton_C.setEnabled(false);jButton_D.setEnabled(false);
         jButton_E.setEnabled(false);jButtonF.setEnabled(false);jButton_G.setEnabled(false);jButton_H.setEnabled(false);
         jButton_I.setEnabled(false);jButton_J.setEnabled(false);jButton_K.setEnabled(false);jButton_L.setEnabled(false);
-        jButtonM.setEnabled(false);jButtonN.setEnabled(false);jButton_O.setEnabled(false);jButton_P.setEnabled(false);
+        jButtonM.setEnabled(false);jButton_N.setEnabled(false);jButton_Ñ.setEnabled(false);jButton_O.setEnabled(false);jButton_P.setEnabled(false);;
         jButton_Q.setEnabled(false);jButton_R.setEnabled(false);jButton_S.setEnabled(false);jButton_T.setEnabled(false);
         jButton_U.setEnabled(false);jButton_V.setEnabled(false);jButton_W.setEnabled(false);jButton_X.setEnabled(false);
         jButton_Y.setEnabled(false);jButton_Z.setEnabled(false);
@@ -769,13 +750,11 @@ public class View extends javax.swing.JFrame {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Keyboard_Panel;
-    private javax.swing.JPanel Menu_Panel;
     private javax.swing.JPanel RightPanel;
     private javax.swing.JPanel basePanel;
     private javax.swing.JLabel hangmanGraphic;
     private javax.swing.JButton jButtonF;
     private javax.swing.JButton jButtonM;
-    private javax.swing.JButton jButtonN;
     private javax.swing.JButton jButton_A;
     private javax.swing.JButton jButton_B;
     private javax.swing.JButton jButton_C;
@@ -787,11 +766,11 @@ public class View extends javax.swing.JFrame {
     private javax.swing.JButton jButton_J;
     private javax.swing.JButton jButton_K;
     private javax.swing.JButton jButton_L;
+    private javax.swing.JButton jButton_N;
     private javax.swing.JButton jButton_O;
     private javax.swing.JButton jButton_P;
     private javax.swing.JButton jButton_Q;
     private javax.swing.JButton jButton_R;
-    private javax.swing.JButton jButton_Resolve;
     private javax.swing.JButton jButton_S;
     private javax.swing.JButton jButton_StartGame;
     private javax.swing.JButton jButton_T;
@@ -801,9 +780,25 @@ public class View extends javax.swing.JFrame {
     private javax.swing.JButton jButton_X;
     private javax.swing.JButton jButton_Y;
     private javax.swing.JButton jButton_Z;
+    private javax.swing.JButton jButton_Ñ;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JTextField jTextField_HangManWord;
     private javax.swing.JPanel leftPanel;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void update(Observable o, Object arg) {
+        
+        if(arg instanceof PacketUserMove){
+            PacketUserMove pum = (PacketUserMove) arg;
+            if(!pum.getUser().equalsIgnoreCase(nick)){
+                System.out.println("Movimiento: " + pum.getC());
+                controller.tryMove(pum.getC());
+                controller.sendToNext(pum);
+            } else {
+                System.out.println("Soy yo: " + pum.getC());
+            }
+        }
+    }
 }

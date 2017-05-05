@@ -9,18 +9,14 @@ package packets;
  *
  * @author davgeek
  */
-public class PacketMessage extends Packet {
-    private String text;
+public class PacketNewWord extends Packet{
+    private String word;
 
-    public PacketMessage() {
-    }
-    
-    public PacketMessage(String text) {
-        this.text = text;
+    public PacketNewWord(String word) {
+        this.word = word;
     }
 
-    public String getText() {
-        return text;
-    }
-    
+    public String getWord() {
+        return word;
+    }    
 }

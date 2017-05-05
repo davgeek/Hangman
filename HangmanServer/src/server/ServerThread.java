@@ -59,6 +59,10 @@ public class ServerThread implements Runnable {
                         }
                     }
                     
+                    if(object instanceof PacketNewWord){
+                        
+                    }
+                    
                     if(object instanceof PacketGameStart) {
                         System.out.println("Iniciar juego");
                         
