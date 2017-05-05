@@ -55,7 +55,7 @@ public class FilterControl implements Runnable, Observer {
 
                     if (object instanceof PacketGameStart) {
                         PacketGameStart pgs = (PacketGameStart) object;
-                        if (pgs.start) {
+                        if (pgs.isStart()) {
                             start = true;
                         }
                         System.out.println("Iniciar juego");
@@ -113,6 +113,8 @@ public class FilterControl implements Runnable, Observer {
         if (object instanceof Packet) {
             if (object instanceof PacketSetupGame) {
                 PacketSetupGame pir = (PacketSetupGame) object;
+                gameWord = pir.gameWord;
+                System.out.println("Palabra: " + gameWord);
                 queueOut.addMsg(pir);
             } else {
                 addToGui(object);

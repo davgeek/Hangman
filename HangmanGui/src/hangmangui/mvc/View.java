@@ -803,7 +803,7 @@ public class View extends javax.swing.JFrame implements Observer{
         
         if(arg instanceof PacketGameStart){
             PacketGameStart pgs = (PacketGameStart) arg;
-            if(pgs.start){
+            if(pgs.isStart()){
                 activateAllButtons();
                 updateGraphics();
                 updateHangmanWord();

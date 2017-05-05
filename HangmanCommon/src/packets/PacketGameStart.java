@@ -10,5 +10,22 @@ package packets;
  * @author davgeek
  */
 public class PacketGameStart extends Packet {
-    public boolean start = true;
+    private boolean start = true;
+    private String from;
+
+    public PacketGameStart() {
+    }
+
+    public PacketGameStart(boolean start, String from) {
+        this.start = start;
+        this.from = from;
+    }
+
+    public boolean isStart() {
+        return start;
+    }
+
+    public String getFrom() {
+        return from;
+    }
 }
