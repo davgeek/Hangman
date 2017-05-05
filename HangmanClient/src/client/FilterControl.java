@@ -47,7 +47,6 @@ public class FilterControl implements Runnable, Observer {
             @Override
             public void received(Connection connection, Object object) {
                 if (object instanceof Packet) {
-                    System.out.println("obj: " + object.toString());
                     if (object instanceof PacketError) {
                         PacketError pe = (PacketError) object;
                         System.out.println(pe.getError());

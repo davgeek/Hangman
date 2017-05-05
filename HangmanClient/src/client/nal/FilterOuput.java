@@ -29,8 +29,8 @@ import utils.Network;
 public class FilterOuput implements Runnable, Observer {
     private final static int WRITE_BUFFER = 256 * 1024;
     private final static int READ_BUFFER = 256 * 1024;
-    private Client filterOutput;
     
+    private Client filterOutput;
     private String nickname;
     private String nextIp;
 

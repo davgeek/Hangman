@@ -67,7 +67,7 @@ public class ServerThread implements Runnable {
                         System.out.println("Iniciar juego");
                         
                         PacketGameStart pgs = (PacketGameStart) object;
-                        if(pgs.start){
+                        if(pgs.isStart()){
                             isStart = true;
                             if(players.size()> 0){
                                 PacketSetupGame pir = new PacketSetupGame();

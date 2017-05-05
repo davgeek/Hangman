@@ -694,6 +694,7 @@ public class View extends javax.swing.JFrame implements Observer{
     private void jButton_StartGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_StartGameActionPerformed
         jButton_StartGame.setText("Reiniciar");
         controller.reset();
+        controller.sendToNext(new PacketGameStart(true, nick));
         activateAllButtons();
         updateGraphics();
         updateHangmanWord();
@@ -808,7 +809,9 @@ public class View extends javax.swing.JFrame implements Observer{
                 updateGraphics();
                 updateHangmanWord();
             }
-            controller.sendToNext(pgs);
+            if(!pgs.getFrom().equalsIgnoreCase(nick)){
+                controller.sendToNext(pgs);
+            }
         }
     }
 }
